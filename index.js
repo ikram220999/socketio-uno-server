@@ -54,6 +54,14 @@ io.on("connection", (socket) => {
     socket.to(data.room).emit("cur_card", data.card);
   })
 
+  socket.on("player_draw", (data) => {
+    let obj = {}
+    obj["cardDrawed"] = data.cardDrawed
+    obj["turn"] = data.turn
+
+    socket.to(data.room).emit("player_draw_ws", obj)
+  })
+
 
   socket.to(1).emit("test", "kambing");
 
