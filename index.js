@@ -39,8 +39,19 @@ io.on("connection", (socket) => {
     //game start
   });
 
+  socket.on("specific_user", (data) => {
+    console.log("cuba lagi", data.id);
+    // socket.broadcast.to(data.id).emit('my_message', "hiiiii")
+  })
+
+
   socket.on("start_game", (data) => {
-    socket.to(data.room).emit("start", true);
+    socket.to(data.room).emit("start", data.cardPlayer);
+
+  })
+
+  socket.on("draw_first", (data) => {
+    socket.to(data.room).emit("cur_card", data.card);
   })
 
 
