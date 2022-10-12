@@ -51,7 +51,7 @@ io.on("connection", (socket) => {
     obj["cardPlayer"] = data.cardPlayer;
     obj["listUser"] = data.listUser;
     obj["gameDeck"] = data.gameDeck;
-    
+
     socket.to(data.room).emit("start", obj);
 
   })
@@ -70,6 +70,7 @@ io.on("connection", (socket) => {
     console.log("cardDrawed", data.cardDrawed);
     obj["cardDrawed"] = data.cardDrawed
     obj["turn"] = data.turn
+    obj["gameDeck"] = data.gameDeck
 
     socket.to(data.room).emit("player_draw_ws", obj)
   })
@@ -84,6 +85,7 @@ io.on("connection", (socket) => {
     let obj = {}
     obj["cardDrawed"] = data.cardDrawed
     obj["turn"] = data.turn
+    obj["gameDeck"] = data.gameDeck
 
     socket.to(data.room).emit("plus_two_ws", obj)
   })
