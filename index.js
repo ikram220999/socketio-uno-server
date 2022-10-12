@@ -49,7 +49,9 @@ io.on("connection", (socket) => {
 
     let obj = {};
     obj["cardPlayer"] = data.cardPlayer;
-    obj["listUser"] = data.listUser
+    obj["listUser"] = data.listUser;
+    obj["gameDeck"] = data.gameDeck;
+    
     socket.to(data.room).emit("start", obj);
 
   })
