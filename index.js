@@ -91,7 +91,8 @@ io.on("connection", (socket) => {
   })
 
   socket.on("minus_two_after_player_add", (data) => {
-    socket.to(data.room).emit("minus_two_after_player_add_ws", data.idxCard)
+    socket.to(data.room).emit("minus_two_after_player_add_ws", data.gameDeck
+    )
   })
 
 
