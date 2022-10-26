@@ -95,6 +95,14 @@ io.on("connection", (socket) => {
     )
   })
 
+  socket.on("take_card", (data) => {
+    let obj = {}
+    obj["gameDeck"] = data.gameDeck
+    obj["turn"] = data.turn
+
+    socket.to(data.room).emit("take_card_ws", obj);
+  })
+
 
   socket.to(1).emit("test", "kambing");
 
