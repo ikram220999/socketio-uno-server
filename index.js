@@ -68,9 +68,14 @@ io.on("connection", (socket) => {
     let obj = {}
 
     console.log("cardDrawed", data.cardDrawed);
+    console.log("turn" , data.turn);
     obj["cardDrawed"] = data.cardDrawed
     obj["turn"] = data.turn
     obj["gameDeck"] = data.gameDeck
+
+    if(data.skip){
+      obj["skip"] = data.skip;
+    }
 
     socket.to(data.room).emit("player_draw_ws", obj)
   })
