@@ -80,6 +80,19 @@ io.on("connection", (socket) => {
     socket.to(data.room).emit("player_draw_ws", obj)
   })
 
+  socket.on("player_draw_reverse", (data) => {
+    let obj = {};
+
+    console.log("reverse turn", data.turn);
+
+    obj["cardDrawed"] = data.cardDrawed
+    obj["turn"] = data.turn
+    obj["gameDeck"] = data.gameDeck
+    obj["direction"] = data.direction
+
+    socket.to(data.room).emit("player_draw_reverse_ws", obj);
+  })
+
   socket.on("winner", (data) => {
     socket.to(data.room).emit("display_winner", data.winnerId)
   })
