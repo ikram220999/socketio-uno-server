@@ -121,6 +121,17 @@ io.on("connection", (socket) => {
     socket.to(data.room).emit("take_card_ws", obj);
   })
 
+  socket.on("player_draw_change_color", (data) => {
+    let obj ={}
+    obj["cardDrawed"] = data.cardDrawed
+    obj["gameDeck"] = data.gameDeck
+    obj["turn"] = data.turn
+    obj["changeColor"] = data.changeColor
+    obj["cardColor"] = data.cardColor
+  
+    socket.to(data.room).emit("player_draw_change_color_ws", obj)
+  })
+
 
   socket.to(1).emit("test", "kambing");
 
