@@ -5,22 +5,15 @@ const { Server } = require("socket.io");
 const cors = require("cors");
 
 const server = http.createServer(app);
-
-// const io = new Server(server, {
-//   cors: {
-//     origin: "http://localhost:3000",
-//     methods: ["GET", "POST"],
-//   },
-// });
+const user = [];
 
 const io = new Server(server, {
   cors: {
-    origin: `*`,
+    origin: `https://famous-piroshki-468723.netlify.app`,
     
     
     // https://stately-torrone-f0cacf.netlify.app
     // http://localhost:3000
-    // Access-Control-Allow-Origin: '*',
     credentials:true,            //access-control-allow-credentials:true
     optionSuccessStatus:200,
     methods: ["GET", "POST"],
@@ -28,6 +21,10 @@ const io = new Server(server, {
 });
 
 app.use(cors());
+
+app.get("/", (req, res) => {
+    res.send("server ok");
+}); 
 
 let arr = [];
 
