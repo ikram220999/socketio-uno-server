@@ -1,8 +1,8 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const http = require("http");
 const { Server } = require("socket.io");
-const cors = require("cors");
 
 const server = http.createServer(app);
 const user = [];
@@ -14,13 +14,14 @@ const io = new Server(server, {
     
     // https://stately-torrone-f0cacf.netlify.app
     // http://localhost:3000
-    credentials:true,            //access-control-allow-credentials:true
+    credentials:true,   
+    // "preflightContinue": false,         //access-control-allow-credentials:true
     optionSuccessStatus:200,
     methods: ["GET", "POST"],
   },
 });
 
-app.use(cors());
+// app.use(cors());
 
 app.get("/", (req, res) => {
     res.send("server ok");
