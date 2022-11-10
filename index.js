@@ -1,10 +1,9 @@
-const express = require("express");
-const app = express();
-const http = require("http");
-const { Server } = require("socket.io");
+const express = require('express');
+const http = require('http');
+const socketio = require('socket.io');
 // const cors = require("cors");
 
-const server = http.createServer(app);
+// const server = http.createServer(app);
 
 // const io = new Server(server, {
 //   cors: {
@@ -12,22 +11,15 @@ const server = http.createServer(app);
 //     methods: ["GET", "POST"],
 //   },
 // });
+const app = express();
 app.use(cors());
-
-const io = new Server(server, {
+const server = http.createServer(app);
+const io = socketio(server, {
   cors: {
     origin: 'https://famous-piroshki-468723.netlify.app',
-    
-    
-    // https://stately-torrone-f0cacf.netlify.app
-    // http://localhost:3000
-    // Access-Control-Allow-Origin: '*',
-    // credentials:true,            //access-control-allow-credentials:true
-    // optionSuccessStatus:200,
-    methods: ["GET", "POST"],
+    methods: ['GET', 'POST'],
   },
 });
-
 
 app.get("/", (req, res) => {
   res.send("server ok");
