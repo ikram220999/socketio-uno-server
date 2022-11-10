@@ -15,7 +15,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: `https://famous-piroshki-468723.netlify.app/`,
+    origin: `https://famous-piroshki-468723.netlify.app`,
     
     
     // https://stately-torrone-f0cacf.netlify.app
