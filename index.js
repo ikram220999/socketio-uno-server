@@ -2,30 +2,28 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const http = require("http");
-const { Server } = require("socket.io");
+// const { Server } = require("socket.io");
 
 const server = http.createServer(app);
+
+const httpServer = require("http").createServer();
 const user = [];
 
-const io = new Server(server, {
+const io = require('socket.io')(httpServer, {
   cors: {
-    origin: `https://famous-piroshki-468723.netlify.app`,
-    
-    
-    // https://stately-torrone-f0cacf.netlify.app
-    // http://localhost:3000
+    origin: 'https://famous-piroshki-468723.netlify.app',
     credentials:true,   
     // "preflightContinue": false,         //access-control-allow-credentials:true
     optionSuccessStatus:200,
     methods: ["GET", "POST"],
-  },
+  }
 });
 
 // app.use(cors());
 
-app.get("/", (req, res) => {
-    res.send("server ok");
-}); 
+// app.get("/", (req, res) => {
+//     res.send("server ok");
+// }); 
 
 let arr = [];
 
