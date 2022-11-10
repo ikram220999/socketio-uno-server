@@ -1,28 +1,29 @@
-const express = require('express');
-const http = require('http');
-const socketio = require('socket.io');
-// const cors = require("cors");
-
-// const server = http.createServer(app);
-
-// const io = new Server(server, {
-//   cors: {
-//     origin: "http://localhost:3000",
-//     methods: ["GET", "POST"],
-//   },
-// });
+const express = require("express");
 const app = express();
-app.use(cors());
+const http = require("http");
+const { Server } = require("socket.io");
+const cors = require("cors");
+
 const server = http.createServer(app);
-const io = socketio(server, {
+const user = [];
+
+const io = new Server(server, {
   cors: {
-    origin: 'https://famous-piroshki-468723.netlify.app',
-    methods: ['GET', 'POST'],
+    origin: `https://famous-piroshki-468723.netlify.app`,
+    
+    
+    // https://stately-torrone-f0cacf.netlify.app
+    // http://localhost:3000
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200,
+    methods: ["GET", "POST"],
   },
 });
 
+app.use(cors());
+
 app.get("/", (req, res) => {
-  res.send("server ok");
+    res.send("server ok");
 }); 
 
 let arr = [];
@@ -150,6 +151,9 @@ io.on("connection", (socket) => {
   // });
 });
 
-app.listen(process.env.PORT || 3001, function(){
-  console.log("Express server listening on port %d in %s mode");
+const host = "0.0.0.0";
+const port = process.env.PORT || 3001;
+
+server.listen(port, host, function () {
+  console.log("Server started.......");
 });
