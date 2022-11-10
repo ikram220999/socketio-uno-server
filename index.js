@@ -29,6 +29,10 @@ const io = new Server(server, {
 
 app.use(cors());
 
+app.get("/", (req, res) => {
+  res.send("server ok");
+}); 
+
 let arr = [];
 
 io.on("connection", (socket) => {
