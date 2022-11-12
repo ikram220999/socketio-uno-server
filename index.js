@@ -10,12 +10,12 @@ const user = [];
 const io = new Server(server, {
   cors: {
     origin: `https://famous-piroshki-468723.netlify.app`,
-    
-    
+    // origin: `http://localhost:3000`,
+
     // https://stately-torrone-f0cacf.netlify.app
     // http://localhost:3000
-    credentials:true,            //access-control-allow-credentials:true
-    optionSuccessStatus:200,
+    credentials: true, //access-control-allow-credentials:true
+    optionSuccessStatus: 200,
     methods: ["GET", "POST"],
   },
 });
@@ -23,8 +23,8 @@ const io = new Server(server, {
 app.use(cors());
 
 app.get("/", (req, res) => {
-    res.send("server ok");
-}); 
+  res.send("server ok");
+});
 
 let arr = [];
 
@@ -35,17 +35,30 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("receive_message", data);
   });
 
-  
   socket.on("join_room", (room) => {
-      
-        console.log("dh ada", io.sockets.adapter.rooms);
-        socket.join(room);
+    // const key = Object.keys(a);
 
-        socket.to(room).emit("user_join", socket.id);
+    socket.join(room);
+    var a = io.sockets.adapter.rooms;
+    // console.log("dh ada", key);
+
+    for (let [key, value] of a) {
+      var b = Array.from(value);
+      // let c = b.split(',');
+      let c = [];
+      // b.forEach(ele => {
+      //   c.push(ele)
+      // })
+      console.log(key + " = " + b);
+    }
+
+    socket.to(room).emit("user_join", socket.id);
+
+    console.log("harluuu", io.sockets.adapter.rooms.get(room).size);
 
     const sockets = Array.from(io.sockets.sockets).map((socket) => socket[0]);
-    socket.to(room).emit("list_user", sockets);
-    console.log(sockets);
+    socket.to(room).emit("list_user", b);
+    // console.log(sockets);
 
     //game start
   });
@@ -53,98 +66,93 @@ io.on("connection", (socket) => {
   socket.on("specific_user", (data) => {
     console.log("cuba lagi", data.id);
     // socket.broadcast.to(data.id).emit('my_message', "hiiiii")
-  })
-
+  });
 
   socket.on("start_game", (data) => {
-
     let obj = {};
     obj["cardPlayer"] = data.cardPlayer;
     obj["listUser"] = data.listUser;
     obj["gameDeck"] = data.gameDeck;
 
     socket.to(data.room).emit("start", obj);
-
-  })
+  });
 
   socket.on("draw_first", (data) => {
-    let obj = {}
-    obj["card"] = data.card
-    obj["listUser"] = data.listUser
+    let obj = {};
+    obj["card"] = data.card;
+    obj["listUser"] = data.listUser;
 
     socket.to(data.room).emit("cur_card", obj);
-  })
+  });
 
   socket.on("player_draw", (data) => {
-    let obj = {}
+    let obj = {};
 
     console.log("cardDrawed", data.cardDrawed);
-    console.log("turn" , data.turn);
-    obj["cardDrawed"] = data.cardDrawed
-    obj["turn"] = data.turn
-    obj["gameDeck"] = data.gameDeck
+    console.log("turn", data.turn);
+    obj["cardDrawed"] = data.cardDrawed;
+    obj["turn"] = data.turn;
+    obj["gameDeck"] = data.gameDeck;
 
-    if(data.skip){
+    if (data.skip) {
       obj["skip"] = data.skip;
     }
 
-    socket.to(data.room).emit("player_draw_ws", obj)
-  })
+    socket.to(data.room).emit("player_draw_ws", obj);
+  });
 
   socket.on("player_draw_reverse", (data) => {
     let obj = {};
 
     console.log("reverse turn", data.turn);
 
-    obj["cardDrawed"] = data.cardDrawed
-    obj["turn"] = data.turn
-    obj["gameDeck"] = data.gameDeck
-    obj["direction"] = data.direction
+    obj["cardDrawed"] = data.cardDrawed;
+    obj["turn"] = data.turn;
+    obj["gameDeck"] = data.gameDeck;
+    obj["direction"] = data.direction;
 
     socket.to(data.room).emit("player_draw_reverse_ws", obj);
-  })
+  });
 
   socket.on("winner", (data) => {
-    socket.to(data.room).emit("display_winner", data.winnerId)
-  })
+    socket.to(data.room).emit("display_winner", data.winnerId);
+  });
 
   socket.on("plus_two", (data) => {
     console.log("cardDrawed", data.cardDrawed);
 
-    let obj = {}
-    obj["cardDrawed"] = data.cardDrawed
-    obj["turn"] = data.turn
-    obj["gameDeck"] = data.gameDeck
+    let obj = {};
+    obj["cardDrawed"] = data.cardDrawed;
+    obj["turn"] = data.turn;
+    obj["gameDeck"] = data.gameDeck;
 
-    socket.to(data.room).emit("plus_two_ws", obj)
-  })
+    socket.to(data.room).emit("plus_two_ws", obj);
+  });
 
   socket.on("minus_two_after_player_add", (data) => {
-    socket.to(data.room).emit("minus_two_after_player_add_ws", data.gameDeck
-    )
-  })
+    socket.to(data.room).emit("minus_two_after_player_add_ws", data.gameDeck);
+  });
 
   socket.on("take_card", (data) => {
-    let obj = {}
-    obj["gameDeck"] = data.gameDeck
-    obj["turn"] = data.turn
+    let obj = {};
+    obj["gameDeck"] = data.gameDeck;
+    obj["turn"] = data.turn;
 
     socket.to(data.room).emit("take_card_ws", obj);
-  })
+  });
 
   socket.on("player_draw_change_color", (data) => {
-    let obj ={}
-    obj["cardDrawed"] = data.cardDrawed
-    obj["gameDeck"] = data.gameDeck
-    obj["turn"] = data.turn
-    obj["changeColor"] = data.changeColor
-    obj["cardColor"] = data.cardColor
-  
-    socket.to(data.room).emit("player_draw_change_color_ws", obj)
-  })
+    let obj = {};
+    obj["cardDrawed"] = data.cardDrawed;
+    obj["gameDeck"] = data.gameDeck;
+    obj["turn"] = data.turn;
+    obj["changeColor"] = data.changeColor;
+    obj["cardColor"] = data.cardColor;
 
+    socket.to(data.room).emit("player_draw_change_color_ws", obj);
+  });
 
-  socket.to(1).emit("test", "kambing");
+  socket.to(1).emit("test", "kambig");
 
   // socket.on("test", (data) => {
   //   console.log("test", data);
