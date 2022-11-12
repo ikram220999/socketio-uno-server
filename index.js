@@ -36,16 +36,20 @@ io.on("connection", (socket) => {
   });
 
   socket.on("join_room", (room) => {
+    
     // const key = Object.keys(a);
-
+    
     socket.join(room);
     var a = io.sockets.adapter.rooms;
     // console.log("dh ada", key);
+    var c = null;
 
     for (let [key, value] of a) {
       var b = Array.from(value);
       // let c = b.split(',');
-      let c = [];
+      if(key == room){
+        c = b
+      }
       // b.forEach(ele => {
       //   c.push(ele)
       // })
@@ -57,7 +61,7 @@ io.on("connection", (socket) => {
     console.log("harluuu", io.sockets.adapter.rooms.get(room).size);
 
     const sockets = Array.from(io.sockets.sockets).map((socket) => socket[0]);
-    socket.to(room).emit("list_user", b);
+    socket.to(room).emit("list_user", c);
     // console.log(sockets);
 
     //game start
