@@ -35,11 +35,12 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("receive_message", data);
   });
 
-  socket.on("join_room", (room) => {
+  socket.on("join_room", (data) => {
     
     // const key = Object.keys(a);
+    console.log("data room",data.room);
     
-    socket.join(room);
+    socket.join(data.room);
     var a = io.sockets.adapter.rooms;
     // console.log("dh ada", key);
     var c = null;
@@ -47,7 +48,7 @@ io.on("connection", (socket) => {
     for (let [key, value] of a) {
       var b = Array.from(value);
       // let c = b.split(',');
-      if(key == room){
+      if(key == data.room){
         c = b
       }
       // b.forEach(ele => {
@@ -56,12 +57,19 @@ io.on("connection", (socket) => {
       console.log(key + " = " + b);
     }
 
-    socket.to(room).emit("user_join", socket.id);
 
-    console.log("harluuu", io.sockets.adapter.rooms.get(room).size);
+var z = {};
+z["id"] = socket.id
+z["name"] = data.name
+    socket.to(data.room).emit("user_join", z);
+
+    console.log("harluuu", io.sockets.adapter.rooms.get(data.room).size);
 
     const sockets = Array.from(io.sockets.sockets).map((socket) => socket[0]);
-    socket.to(room).emit("list_user", c);
+    var k = {};
+    k["c"] = c;
+    k["usernameList"] = data.name
+    socket.to(data.room).emit("list_user", k);
     // console.log(sockets);
 
     //game start
@@ -77,6 +85,7 @@ io.on("connection", (socket) => {
     obj["cardPlayer"] = data.cardPlayer;
     obj["listUser"] = data.listUser;
     obj["gameDeck"] = data.gameDeck;
+    obj["usernameList"] = data.listUsername
 
     socket.to(data.room).emit("start", obj);
   });
