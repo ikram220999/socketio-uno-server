@@ -9,8 +9,8 @@ const user = [];
 
 const io = new Server(server, {
   cors: {
-    origin: `https://famous-piroshki-468723.netlify.app`,
-    // origin: `http://localhost:3000`,
+    // origin: `https://famous-piroshki-468723.netlify.app`,
+    origin: `http://localhost:3000`,
 
     // https://stately-torrone-f0cacf.netlify.app
     // http://localhost:3000
@@ -166,6 +166,15 @@ z["name"] = data.name
   });
 
   socket.to(1).emit("test", "kambig");
+
+  socket.on('send_chat', (data) => {
+    let obj = {};
+
+    obj["user"] =data.user;
+    obj["chat"] = data.chat;
+
+    socket.to(data.room).emit("send_chat_ws", obj);
+  })
 
   // socket.on("test", (data) => {
   //   console.log("test", data);
