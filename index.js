@@ -9,8 +9,8 @@ const user = [];
 
 const io = new Server(server, {
   cors: {
-    // origin: `https://famous-piroshki-468723.netlify.app`,
-    origin: `http://localhost:3000`,
+    origin: `https://famous-piroshki-468723.netlify.app`,
+    // origin: `http://localhost:3000`,
 
     // https://stately-torrone-f0cacf.netlify.app
     // http://localhost:3000
